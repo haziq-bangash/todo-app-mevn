@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:8080/api";
+// const API_BASE_URL = "http://localhost:8080/api";
+const API_BASE_URL = 'https://todo-app-server-eosin.vercel.app/api';
 
 export async function registerUser(userData) {
   return axios.post(`${API_BASE_URL}/users/register`, userData)

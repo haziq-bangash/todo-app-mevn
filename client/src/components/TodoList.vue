@@ -83,7 +83,7 @@ const addTodo = async () => {
   const todo = { task: newTodo.value, completed: false, created_at: Date.now(), completed_time: null, }
   try {
     
-    const res = await createTodo(todo, store.getters.user.token, store.getters.user._id)
+    await createTodo(todo, store.getters.user.token, store.getters.user._id)
     todoList.value.push(todo);
     newTodo.value = "";
     alert('todo added')
@@ -101,7 +101,7 @@ const checkCompleted = async (index) => {
   todo.completed = !todo.completed
   // console.log(todo.completed)
   try {
-    const res = await updateTodo(todo, store.getters.user.token)
+    await updateTodo(todo, store.getters.user.token)
     alert('todo updated')
     // todoList.value[index].completed = !todoList.value[index].completed;
   } catch (error) {

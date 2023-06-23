@@ -84,6 +84,7 @@ onMounted(() => {
   }
 
   try {
+    store.commit("setUser", JSON.parse(storedUserData));
     const userData = JSON.parse(storedUserData);
 
     // Check if the user state is already populated
@@ -131,6 +132,7 @@ const addTodo = async () => {
     todoList.value.push(todo);
     newTodo.value = "";
     alert("Todo added successfully");
+
   } catch (error) {
     console.error("Error adding todo:", error);
     alert("Failed to add todo. Please try again later.");

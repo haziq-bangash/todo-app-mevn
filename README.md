@@ -2,6 +2,9 @@
 This is a Todo List application built with a MEVN stack (MongoDB, Express.js, Vue3, Node.js).
 The app allows users to create, manage, and organize their todo tasks.
 
+## Link
+[Link to deployed App](https://todo-app-mevn-client.vercel.app/)
+
 ## Tech Stack
 M - MongoDB </br>
 E - Express </br>

@@ -8,7 +8,7 @@ import TodoList from '@/components/TodoList.vue'
 export default {
     name: 'Dashboard',
     components: {
-        TodoList
+        TodoList,
     }
 }
 </script>

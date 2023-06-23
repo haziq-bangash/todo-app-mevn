@@ -74,50 +74,55 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
-import { registerUser } from "@/services/api";
-import store from "@/store/store";
-import router from "@/router";
+  import { ref, onMounted } from "vue";
+  import { registerUser } from "@/services/api";
+  import store from "@/store/store";
+  import router from "@/router";
 
-const email = ref("");
-const password = ref("");
-const firstName = ref("");
-const lastName = ref("");
-const pictureUrl = ref("");
+  const email = ref("");
+  const password = ref("");
+  const firstName = ref("");
+  const lastName = ref("");
+  const pictureUrl = ref("");
 
-onMounted(() => {
-  if (store.getters.user != null) {
-    router.push({ name: "Dashboard" });
-  }
-});
+  onMounted(() => {
+    if (store.getters.user != null) {
+      router.push({ name: "Dashboard" });
+    }
+  });
 
-const register = async () => {
-  const user = {
-    "email": email.value,
-    "password": password.value,
-    "first_name": firstName.value,
-    "last_name": lastName.value,
-    "picture": pictureUrl.value,
-  };
-  // console.log(user)
-  try {
-    const response = await registerUser(user);
-    const { token, email, picture, _id } = response;
-    const userData = {
-      token,
-      _id,
-      email,
-      pictureUrl: picture,
+  const register = async () => {
+    const user = {
+      email: email.value,
+      password: password.value,
+      first_name: firstName.value,
+      last_name: lastName.value,
+      picture: pictureUrl.value,
     };
-    store.commit("setUser", userData);
-    // console.log(store.getters.user)
-    router.push({ name: "Dashboard" });
-  } catch (error) {
-    alert("Error registering user");
-  }
-};
 
-const onFormSubmit = () => {
-  register();
-};
+    try {
+      const response = await registerUser(user);
+      const { token, email, picture, _id } = response;
+      const userData = {
+        token,
+        _id,
+        email,
+        pictureUrl: picture,
+      };
+
+      // Save user data to local storage
+      localStorage.setItem("userData", JSON.stringify(userData));
+
+      // Update the user store with the registered user data
+      store.commit("setUser", userData);
+
+      router.push({ name: "Dashboard" });
+    } catch (error) {
+      alert("Error registering user");
+    }
+  };
+
+  const onFormSubmit = () => {
+    register();
+  };
 </script>

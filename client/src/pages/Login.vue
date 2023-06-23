@@ -41,50 +41,54 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
-import { loginUser } from "@/services/api";
-import store from "@/store/store";
-import router from "@/router";
+  import { onMounted, ref } from "vue";
+  import { loginUser } from "@/services/api";
+  import store from "@/store/store";
+  import router from "@/router";
 
-const email = ref("");
-const password = ref("");
+  const email = ref("");
+  const password = ref("");
 
-onMounted(() => {
-  if (store.getters.user != null){
-    router.push({ name: "Dashboard" });
-  }
-});
+  onMounted(() => {
+    const storedUserData = localStorage.getItem("userData");
+    if (storedUserData) {
+      const userData = JSON.parse(storedUserData);
+      store.commit("setUser", userData);
+      router.push({ name: "Dashboard" });
+    }
+  });
 
-const login = async () => {
-  const user = {
-    email: email.value,
-    password: password.value,
-  };
-
-  try {
-    const response = await loginUser(user);
-    const { token, email, picture, _id } = response;
-    const userData = {
-      token,
-      _id,
-      email,
-      pictureUrl: picture,
+  const login = async () => {
+    const user = {
+      email: email.value,
+      password: password.value,
     };
 
-    // Set the user state in the Vuex store
-    store.commit("setUser", userData);
+    try {
+      const response = await loginUser(user);
+      const { token, email, picture, _id } = response;
+      const userData = {
+        token,
+        _id,
+        email,
+        pictureUrl: picture,
+      };
 
-    // Log the user state for verification
-    // console.log("User authenticated:", store.getters.user);
-    // redirect to dashboard
-    router.push({ name: "Dashboard" });
-  } catch (error) {
-    console.error("Login failed:", error);
-  }
-};
+      // Save user data in localStorage
+      localStorage.setItem("userData", JSON.stringify(userData));
 
-const onFormSubmit = () => {
-  console.log("onFormSubmit");
-  login();
-};
+      // Set the user state in the Vuex store
+      store.commit("setUser", userData);
+
+      // Redirect to dashboard
+      router.push({ name: "Dashboard" });
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
+  };
+
+  const onFormSubmit = () => {
+    console.log("onFormSubmit");
+    login();
+  };
 </script>

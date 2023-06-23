@@ -128,12 +128,9 @@ const addTodo = async () => {
 
   try {
     await createTodo(todo, store.getters.user.token, store.getters.user._id);
-    todoList.value.push(todo);
+    fetchTodos(store.getters.user.token, store.getters.user._id);
     newTodo.value = "";
     alert("Todo added successfully");
-    const storedUserData = localStorage.getItem("userData");
-    const userData = JSON.parse(storedUserData);
-    store.commit("setUser", userData);
   } catch (error) {
     console.error("Error adding todo:", error);
     alert("Failed to add todo. Please try again later.");

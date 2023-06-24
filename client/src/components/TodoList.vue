@@ -21,6 +21,7 @@
               class="form-control col-auto me-2 mb-2"
               placeholder="Be Amazing!"
               v-model="newTodo"
+              @keydown.enter="addTodoOnEnter"
             />
             <button class="btn btn-sm btn-primary col-auto" type="submit">
               Add Todo
@@ -134,6 +135,13 @@ const addTodo = async () => {
   } catch (error) {
     console.error("Error adding todo:", error);
     alert("Failed to add todo. Please try again later.");
+  }
+};
+
+const addTodoOnEnter = (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    addTodo();
   }
 };
 
